@@ -1,7 +1,6 @@
 
-# Proyecto App Ghibli SDP 26
+# Proyecto App Ghibli
 
-## 🗓️ Día 1 | 24.11.2025
 #### **Objetivos:**
 * Familiarizarse con la documentación de la API
 * Entender los datos proporcionados por la API

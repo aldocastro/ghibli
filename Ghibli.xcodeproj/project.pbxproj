@@ -13,9 +13,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		869441972ED4C7E4001B3622 /* Ghibli */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			explicitFileTypes = {
-				Readme.md = net.daringfireball.markdown;
-			};
 			path = Ghibli;
 			sourceTree = "<group>";
 		};
