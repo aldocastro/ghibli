@@ -17,8 +17,16 @@ struct ContentView: View {
                     do {
                         let films = try await repository.getFilms()
                         print("Peliculas obtenidas: \(films.count)")
+                        print("---")
+                        films.forEach { film in
+                            print("Titulo: \(film.title)")
+                            print("Director: \(film.director)")
+                            print("Año: \(film.releaseDate)")
+                            print("Puntuacion: \(film.scorePercentage)")
+                            print("")
+                        }
                     } catch {
-                        print("Error \(error.localizedDescription)")
+                        print("Error al obtener peliculas: \(error.localizedDescription)")
                     }
                 }
             }

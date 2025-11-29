@@ -16,6 +16,10 @@ struct Film: Codable {
 }
 
 extension Film {
+    var scorePercentage: String {
+        "\(rtScore)%"
+    }
+
     static var sample: Film = {
         .init(id: "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
               title: "My Neighbor Totoro",
