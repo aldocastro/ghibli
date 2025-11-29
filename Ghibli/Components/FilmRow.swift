@@ -17,7 +17,10 @@ struct FilmRow: View {
                 case .empty:
                     ProgressView()
                 case .success(let image):
-                    image.resizable()
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 case .failure(let error):
                     ContentUnavailableView {
                         Label("Error al cargar la imagen", systemImage: "photo")
