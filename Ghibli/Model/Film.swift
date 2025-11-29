@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Film: Identifiable, Codable {
+struct Film: Hashable, Identifiable, Codable {
     let id, title, originalTitle: String
     let image, movieBanner: URL?
     let description, director, producer, releaseDate: String

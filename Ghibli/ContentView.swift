@@ -24,9 +24,7 @@ struct ContentView: View {
                     Text("Cargando peliculas...")
                 }
             case .loaded(let films):
-                List(films) { film in
-                    FilmRow(film: film)
-                }
+                FilmsListView(films: films)
             case .error(let error):
                 ContentUnavailableView {
                     Label("No se pudieron cargar las películas.", systemImage: "exclamationmark.triangle")
