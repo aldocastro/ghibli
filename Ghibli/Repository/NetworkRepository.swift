@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol NetworkRepository {
+protocol NetworkRepository: Sendable, NetworkInteractor {
     func getFilms() async throws (NetworkError) -> [Film]
     func getFilm(id: String) async throws (NetworkError) -> Film
 }
 
-struct Network: NetworkRepository, NetworkInteractor {
+struct Network: NetworkRepository {
     func getFilms() async throws(NetworkError) -> [Film] {
         try await getJson(request: URLRequest.get(url: URL.films))
     }
@@ -29,5 +29,5 @@ struct NetworkTest: NetworkRepository {
     
     func getFilm(id: String) async throws(NetworkError) -> Film {
         .sample
-    }    
+    }
 }
