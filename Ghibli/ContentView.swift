@@ -8,34 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
-    var repository: NetworkRepository = Network()
+    @State private var viewModel: FilmsViewModel = FilmsViewModel()
     
     var body: some View {
-        VStack {
-            Button("Obtener peliculas") {
-                Task {
-                    do {
-                        let films = try await repository.getFilms()
-                        print("Peliculas obtenidas: \(films.count)")
-                        print("---")
-                        films.forEach { film in
-                            print("Titulo: \(film.title)")
-                            print("Director: \(film.director)")
-                            print("Año: \(film.releaseDate)")
-                            print("Puntuacion: \(film.scorePercentage)")
-                            print("")
-                        }
-                    } catch {
-                        print("Error al obtener peliculas: \(error.localizedDescription)")
-                    }
+        NavigationStack {
+            switch viewModel.state {
+            case .empty:
+                ContentUnavailableView {
+                    Label("No hay peliculas", systemImage: "film")
+                } description: {
+                    Text("No se encontraron películas de Studio Ghibli")
+                }
+            case .loading:
+                ProgressView {
+                    Text("Cargando peliculas...")
+                }
+            case .loaded(let films):
+                List(films) { film in
+                    FilmRow(film: film)
+                }
+            case .error(let error):
+                ContentUnavailableView {
+                    Label("No se pudieron cargar las películas.", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text("Razón: \(error.localizedDescription)")
                 }
             }
-            .buttonStyle(.borderedProminent)
+        }.task {
+            await viewModel.loadFilms()
         }
-        .padding()
     }
 }
 
 #Preview {
-    ContentView(repository: NetworkTest())
+    ContentView()
 }

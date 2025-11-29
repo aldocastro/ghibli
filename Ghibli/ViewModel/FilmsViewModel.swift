@@ -8,28 +8,23 @@
 import Foundation
 
 enum ViewState {
-    case loading, loaded, empty
+    case loading, loaded([Film]), empty, error(Error)
 }
 
 @Observable @MainActor
 final class FilmsViewModel {
     let repository: NetworkRepository = Network()
-    
+
     private var films: [Film] = []
-    private var state: ViewState = .loading
-    private var showError: Bool = false
-    private var errorMsg: String = ""
+    private(set) var state: ViewState = .empty
     
-    func getFilms() async -> [Film] {
+    func loadFilms() async -> Void {
         state = .loading
         do {
             films = try await repository.getFilms()
-            state = films.count > 0 ? .loaded : .empty
+            state = films.count > 0 ? .loaded(films) : .empty
         } catch {
-            state = .empty
-            errorMsg = error.localizedDescription
-            showError.toggle()
+            state = .error(error)
         }
-        return films
     }
 }
