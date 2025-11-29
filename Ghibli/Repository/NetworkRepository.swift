@@ -21,3 +21,13 @@ struct Network: NetworkRepository, NetworkInteractor {
         try await getJson(request: URLRequest.get(url: URL.film(id: id)))
     }
 }
+
+struct NetworkTest: NetworkRepository {
+    func getFilms() async throws(NetworkError) -> [Film] {
+        [.sample]
+    }
+    
+    func getFilm(id: String) async throws(NetworkError) -> Film {
+        .sample
+    }    
+}
