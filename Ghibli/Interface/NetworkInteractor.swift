@@ -10,11 +10,11 @@ import Foundation
 protocol NetworkInteractor {}
 
 extension NetworkInteractor {
-    func getJson<T: Codable>(request: URLRequest) async throws (NetworkError) -> T {
+    func getJson<T>(request: URLRequest, withType type: T.Type) async throws (NetworkError) -> T where T: Codable  {
         let result: DataAndResponse = try await URLSession.shared.getData(for: request)
         if result.httpResponse.statusCode == 200 {
             do {
-                return try JSONDecoder().decode(T.self, from: result.data)
+                return try JSONDecoder().decode(type, from: result.data)
             } catch {
                 throw NetworkError.json(error)
             }

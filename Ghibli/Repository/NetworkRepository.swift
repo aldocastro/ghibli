@@ -14,13 +14,11 @@ protocol NetworkRepository: Sendable, NetworkInteractor {
 
 struct Network: NetworkRepository {
     func getFilms() async throws(NetworkError) -> [Film] {
-        let filmsDto: [FilmDTO] = try await getJson(request: URLRequest.get(url: URL.films))
-        return filmsDto.map { $0.toFilm() }
+        try await getJson(request: URLRequest.get(url: URL.films), withType: [FilmDTO].self).map { $0.toFilm() }
     }
     
     func getFilm(id: String) async throws(NetworkError) -> Film {
-        let filmDto: FilmDTO = try await getJson(request: URLRequest.get(url: URL.film(id: id)))
-        return filmDto.toFilm()
+        try await getJson(request: URLRequest.get(url: URL.film(id: id)), withType: FilmDTO.self).toFilm()
     }
 }
 
