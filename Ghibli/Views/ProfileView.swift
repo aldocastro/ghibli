@@ -9,8 +9,11 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        ContentUnavailableView {
-            Label("Aquí va tu perfil", systemImage: "person.circle")
+        NavigationStack {
+            ContentUnavailableView {
+                Label("Aquí va tu perfil", systemImage: "person.circle")
+            }
+            .navigationTitle("Perfil")
         }
     }
 }

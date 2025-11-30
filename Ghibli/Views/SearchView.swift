@@ -9,10 +9,13 @@ import SwiftUI
 
 struct SearchView: View {
     var body: some View {
-        ContentUnavailableView {
-            Label("Buscar Películas", systemImage: "magnifyingglass")
-        } description: {
-            Text("Funcionalidad de búsqueda próximamente")
+        NavigationStack {
+            ContentUnavailableView {
+                Label("Buscar Películas", systemImage: "magnifyingglass")
+            } description: {
+                Text("Funcionalidad de búsqueda próximamente")
+            }
+            .navigationTitle("Buscar")
         }
     }
 }

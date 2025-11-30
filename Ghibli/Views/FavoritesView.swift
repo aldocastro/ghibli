@@ -9,10 +9,13 @@ import SwiftUI
 
 struct FavoritesView: View {
     var body: some View {
-        ContentUnavailableView {
-            Label("Sin Favoritas", systemImage: "heart.slash")
-        } description: {
-            Text("Aún no has guardado ninguna película favorita")
+        NavigationStack {
+            ContentUnavailableView {
+                Label("Sin Favoritas", systemImage: "heart.slash")
+            } description: {
+                Text("Aún no has guardado ninguna película favorita")
+            }
+            .navigationTitle("Favoritas")
         }
     }
 }
