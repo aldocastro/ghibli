@@ -19,6 +19,10 @@ extension Film {
     var scorePercentage: String {
         "\(rtScore)%"
     }
+    
+    var yearAndDuration: String {
+        "\(releaseDate) ・ \(runningTime) min"
+    }
 
     static var sample: Film = {
         .init(id: "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
