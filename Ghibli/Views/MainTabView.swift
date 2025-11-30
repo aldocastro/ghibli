@@ -11,7 +11,7 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             Tab("Películas", systemImage: "film.stack") {
-                FilmsListView(films: [])
+                FilmsListView()
             }
             Tab("Favoritas", systemImage: "heart.fill") {
                 FavoritesView()
@@ -24,4 +24,8 @@ struct MainTabView: View {
             }
         }
     }
+}
+
+#Preview {
+    MainTabView()
 }

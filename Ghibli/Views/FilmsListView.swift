@@ -8,21 +8,60 @@
 import SwiftUI
 
 struct FilmsListView: View {
-    let films: [Film]
-
+    @State private var viewModel: FilmsViewModel = FilmsViewModel()
+    
     var body: some View {
-        List(films) { film in
-            NavigationLink(value: film) {
-                FilmRow(film: film)
+        NavigationStack {
+            switch viewModel.state {
+            case .empty:
+                EmptyList()
+            case .loading:
+                ProgressView {
+                    Text("Cargando peliculas...")
+                }
+            case .loaded(let films):
+                List(films) { film in
+                    NavigationLink(value: film) {
+                        FilmRow(film: film)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .navigationTitle("Peliculas")
+                .navigationDestination(for: Film.self) { film in
+                    FilmDetailView(film: film)
+                }
+            case .error(let error):
+                ErrorView(error: error)
             }
-            .buttonStyle(.plain)
         }
-        .navigationDestination(for: Film.self) { film in
-            FilmDetailView(film: film)
+        .task {
+            await viewModel.loadFilms()
+        }
+    }
+}
+
+fileprivate struct EmptyList: View {
+    var body: some View {
+        ContentUnavailableView {
+            Label("No hay peliculas", systemImage: "film")
+        } description: {
+            Text("No se encontraron películas de Studio Ghibli")
+        }
+    }
+}
+
+fileprivate struct ErrorView: View {
+    let error: Error
+    
+    var body: some View {
+        ContentUnavailableView {
+            Label("No se pudieron cargar las películas.", systemImage: "exclamationmark.triangle")
+        } description: {
+            Text(error.localizedDescription)
         }
     }
 }
 
 #Preview {
-    FilmsListView(films: [.sample])
+    FilmsListView()
 }
