@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FilmsListView: View {
-    @State private var viewModel: FilmsViewModel = FilmsViewModel()
+    @Environment(FilmsViewModel.self) var viewModel
     
     var body: some View {
         NavigationStack {
@@ -64,4 +64,5 @@ fileprivate struct ErrorView: View {
 
 #Preview {
     FilmsListView()
+        .environment(FilmsViewModel())
 }

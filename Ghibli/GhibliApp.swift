@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct GhibliApp: App {
+    @State private var filmsViewModel = FilmsViewModel()
     var body: some Scene {
         WindowGroup {
             MainTabView()
+                .environment(filmsViewModel)
         }
     }
 }
