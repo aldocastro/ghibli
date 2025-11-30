@@ -14,23 +14,13 @@ struct MainTabView: View {
                 FilmsListView(films: [])
             }
             Tab("Favoritas", systemImage: "heart.fill") {
-                ContentUnavailableView {
-                    Label("Sin Favoritas", systemImage: "heart.slash")
-                } description: {
-                    Text("Aún no has guardado ninguna película favorita")
-                }
+                FavoritesView()
             }
             Tab("Buscar", systemImage: "magnifyingglass") {
-                ContentUnavailableView {
-                    Label("Buscar Películas", systemImage: "magnifyingglass")
-                } description: {
-                    Text("Funcionalidad de búsqueda próximamente")
-                }
+                SearchView()
             }
             Tab("Perfil", systemImage: "person.fill") {
-                ContentUnavailableView {
-                    Label("Aquí va tu perfil", systemImage: "person.circle")
-                }
+                ProfileView()
             }
         }
     }
