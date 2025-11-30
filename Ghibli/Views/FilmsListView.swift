@@ -22,11 +22,22 @@ struct FilmsListView: View {
                 }
             case .loaded(let films):
                 List(films) { film in
+                    let isFavorite = favViewModel.isFavorite(filmId: film.id)
                     NavigationLink(value: film) {
-                        let isFavorite = favViewModel.isFavorite(filmId: film.id)
                         FilmRow(film: film, isFavorite: isFavorite)
                     }
                     .buttonStyle(.plain)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button {
+                            favViewModel.toggleFavorite(filmId: film.id)
+                        } label: {
+                            Label(
+                                isFavorite ? "Quitar de favoritos" : "Añadir a favoritos",
+                                systemImage: isFavorite
+                                    ? "heart.slash.fill" : "heart.fill"
+                            )
+                        }
+                    }
                 }
                 .navigationTitle("Peliculas")
                 .navigationDestination(for: Film.self) { film in
@@ -62,7 +73,11 @@ fileprivate struct ErrorView: View {
 }
 
 #Preview {
+    let vm = FilmsViewModel()
     FilmsListView()
-        .environment(FilmsViewModel())
+        .environment(vm)
         .environment(FavoritesViewModel())
+        .task {
+            await vm.loadFilms()
+        }
 }
