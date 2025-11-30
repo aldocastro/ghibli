@@ -85,8 +85,8 @@ fileprivate struct Headline: View {
                 } label: {
                     let (imgName, lblText) =
                         isFavorite
-                        ? ("heart.fill", "Quita de favoritos")
-                        : ("heart", "Añade a favoritos")
+                        ? ("heart.fill", "Quitar de favoritas")
+                        : ("heart", "Añadir a favoritas")
                     Label(lblText, systemImage: imgName)
                         .labelStyle(.iconOnly)
                         .foregroundStyle(.red)

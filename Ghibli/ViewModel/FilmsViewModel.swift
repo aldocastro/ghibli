@@ -15,7 +15,7 @@ enum ViewState {
 final class FilmsViewModel {
     let repository: NetworkRepository = Network()
 
-    private var films: [Film] = []
+    private(set) var films: [Film] = []
     private(set) var state: ViewState = .empty
     
     func loadFilms() async -> Void {

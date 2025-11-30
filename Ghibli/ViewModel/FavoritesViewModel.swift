@@ -11,6 +11,10 @@ import Foundation
 final class FavoritesViewModel {
     private var favorites: Set<String> = []
     
+    var isFavoriteListEmpty: Bool {
+        favorites.isEmpty
+    }
+    
     func toggleFavorite(filmId: String) {
         if isFavorite(filmId: filmId) {
             favorites.remove(filmId)

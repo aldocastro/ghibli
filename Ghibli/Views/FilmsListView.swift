@@ -32,7 +32,7 @@ struct FilmsListView: View {
                             favViewModel.toggleFavorite(filmId: film.id)
                         } label: {
                             Label(
-                                isFavorite ? "Quitar de favoritos" : "Añadir a favoritos",
+                                isFavorite ? "Quitar de favoritas" : "Añadir a favoritos",
                                 systemImage: isFavorite
                                     ? "heart.slash.fill" : "heart.fill"
                             )

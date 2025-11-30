@@ -8,14 +8,60 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    @Environment(FilmsViewModel.self) var filmsVM
+    @Environment(FavoritesViewModel.self) var favoritesVM
+
     var body: some View {
         NavigationStack {
-            ContentUnavailableView {
-                Label("Sin Favoritas", systemImage: "heart.slash")
-            } description: {
-                Text("Aún no has guardado ninguna película favorita")
+            if favoritesVM.isFavoriteListEmpty {
+                EmptyView()
+            } else {
+                let favorites: [Film] = filmsVM.films.filter { favoritesVM.isFavorite(filmId: $0.id) }
+                ContentList(favorites: favorites) { film in
+                    favoritesVM.toggleFavorite(filmId: film.id)
+                }
             }
-            .navigationTitle("Favoritas")
         }
     }
+}
+
+fileprivate struct ContentList : View {
+    let favorites: [Film]
+    let removeFromFavorites: (Film) -> Void
+    
+    var body: some View {
+        List(favorites) { film in
+            NavigationLink(value: film) {
+                FilmRow(film: film, isFavorite: true)
+            }
+            .buttonStyle(.plain)
+            .swipeActions {
+                Button {
+                    removeFromFavorites(film)
+                } label: {
+                    Label("Quitar de favoritas", systemImage: "heart.slash")
+                }
+            }
+        }
+        .navigationTitle("Favoritas")
+        .navigationDestination(for: Film.self) { film in
+            FilmDetailView(film: film)
+        }
+    }
+}
+
+fileprivate struct EmptyView: View {
+    var body: some View {
+        ContentUnavailableView {
+            Label("Sin Favoritas", systemImage: "heart.slash")
+        } description: {
+            Text("Aún no has guardado ninguna película favorita.")
+        }
+    }
+}
+
+#Preview {
+    FavoritesView()
+        .environment(FilmsViewModel())
+        .environment(FavoritesViewModel())
 }
