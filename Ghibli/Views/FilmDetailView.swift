@@ -9,13 +9,12 @@ import SwiftUI
 
 struct FilmDetailView: View {
     let film: Film
-    @State private var isFavorite: Bool = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 BannerImageView(movieBanner: film.movieBanner)
-                Headline(film: film, isFavorite: $isFavorite)
+                Headline(film: film)
                 FilmMakers(director: film.director, producer: film.producer)
                 Summary(description: film.description)
             }
@@ -51,7 +50,7 @@ fileprivate struct BannerImageView: View {
 
 fileprivate struct Headline: View {
     let film: Film
-    @Binding var isFavorite: Bool
+    @Environment(FavoritesViewModel.self) private var favViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 7.0) {
@@ -74,14 +73,15 @@ fileprivate struct Headline: View {
                 }
                 Spacer()
                 Button {
-                    isFavorite.toggle()
+                    favViewModel.toggleFavorite(filmId: film.id)
                 } label: {
-                    Label(
-                        isFavorite ? "Quita de favoritos" : "Añade a favoritos",
-                        systemImage: isFavorite ? "heart.slash" : "heart.fill"
-                    )
-                    .labelStyle(.iconOnly)
-                    .foregroundStyle(.red)
+                    let (imgName, lblText) =
+                        favViewModel.isFavorite(filmId: film.id)
+                        ? ("heart.fill", "Quita de favoritos")
+                        : ("heart", "Añade a favoritos")
+                    Label(lblText, systemImage: imgName)
+                        .labelStyle(.iconOnly)
+                        .foregroundStyle(.red)
                 }
             }
         }
@@ -131,4 +131,5 @@ fileprivate struct Summary: View {
 
 #Preview {
     FilmDetailView(film: .sample)
+        .environment(FavoritesViewModel())
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FilmsListView: View {
     @Environment(FilmsViewModel.self) var viewModel
+    @Environment(FavoritesViewModel.self) private var favViewModel
     
     var body: some View {
         NavigationStack {
@@ -22,7 +23,8 @@ struct FilmsListView: View {
             case .loaded(let films):
                 List(films) { film in
                     NavigationLink(value: film) {
-                        FilmRow(film: film, isFavorite: false)
+                        let isFavorite = favViewModel.isFavorite(filmId: film.id)
+                        FilmRow(film: film, isFavorite: isFavorite)
                     }
                     .buttonStyle(.plain)
                 }
@@ -62,4 +64,5 @@ fileprivate struct ErrorView: View {
 #Preview {
     FilmsListView()
         .environment(FilmsViewModel())
+        .environment(FavoritesViewModel())
 }
