@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FilmRow: View {
     let film: Film
+    let isFavorite: Bool
 
     var body: some View {
         HStack(alignment: .top) {
@@ -36,11 +37,16 @@ struct FilmRow: View {
                 Text("Título: \(film.title)")
                 Text("Director: \(film.director)")
                 Text("Puntuación: \(film.scorePercentage)")
+                Label("Añadido a favoritos", systemImage: "heart.fill")
+                    .labelStyle(.iconOnly)
+                    .foregroundStyle(.red)
+                    .foregroundStyle(.black)
+                    .opacity(isFavorite ? 1.0 : 0.0)
             }
         }
     }
 }
 
 #Preview {
-    FilmRow(film: .sample)
+    FilmRow(film: .sample, isFavorite: false)
 }

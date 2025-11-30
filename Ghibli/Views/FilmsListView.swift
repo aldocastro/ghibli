@@ -22,7 +22,7 @@ struct FilmsListView: View {
             case .loaded(let films):
                 List(films) { film in
                     NavigationLink(value: film) {
-                        FilmRow(film: film)
+                        FilmRow(film: film, isFavorite: false)
                     }
                     .buttonStyle(.plain)
                 }

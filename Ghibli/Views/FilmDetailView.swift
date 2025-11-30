@@ -9,12 +9,13 @@ import SwiftUI
 
 struct FilmDetailView: View {
     let film: Film
+    @State private var isFavorite: Bool = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 BannerImageView(movieBanner: film.movieBanner)
-                Headline(film: film)
+                Headline(film: film, isFavorite: $isFavorite)
                 FilmMakers(director: film.director, producer: film.producer)
                 Summary(description: film.description)
             }
@@ -50,6 +51,7 @@ fileprivate struct BannerImageView: View {
 
 fileprivate struct Headline: View {
     let film: Film
+    @Binding var isFavorite: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 7.0) {
@@ -59,14 +61,29 @@ fileprivate struct Headline: View {
                 .font(.title2)
                 .foregroundStyle(.gray)
             HStack {
-                Image(systemName: "star.fill")
-                    .foregroundStyle(.yellow)
-                Text(film.scorePercentage)
-                    .font(.title3.bold())
+                VStack {
+                    HStack {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(.yellow)
+                        Text(film.scorePercentage)
+                            .font(.title3.bold())
+                    }
+                    Text(film.yearAndDuration)
+                        .font(.footnote)
+                        .foregroundStyle(.gray)
+                }
+                Spacer()
+                Button {
+                    isFavorite.toggle()
+                } label: {
+                    Label(
+                        isFavorite ? "Quita de favoritos" : "Añade a favoritos",
+                        systemImage: isFavorite ? "heart.slash" : "heart.fill"
+                    )
+                    .labelStyle(.iconOnly)
+                    .foregroundStyle(.red)
+                }
             }
-            Text(film.yearAndDuration)
-                .font(.footnote)
-                .foregroundStyle(.gray)
         }
         .padding(10.0)
     }
