@@ -9,12 +9,19 @@ import SwiftUI
 
 struct FilmDetailView: View {
     let film: Film
-
+    @Environment(FavoritesViewModel.self) private var favoritesViewModel
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 BannerImageView(movieBanner: film.movieBanner)
-                Headline(film: film)
+                Headline(
+                    film: film,
+                    isFavorite: favoritesViewModel.isFavorite(filmId: film.id),
+                    toggleFavorite: {
+                        favoritesViewModel.toggleFavorite(filmId: film.id)
+                    }
+                )
                 FilmMakers(director: film.director, producer: film.producer)
                 Summary(description: film.description)
             }
@@ -50,7 +57,8 @@ fileprivate struct BannerImageView: View {
 
 fileprivate struct Headline: View {
     let film: Film
-    @Environment(FavoritesViewModel.self) private var favViewModel
+    let isFavorite: Bool
+    let toggleFavorite: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 7.0) {
@@ -73,10 +81,10 @@ fileprivate struct Headline: View {
                 }
                 Spacer()
                 Button {
-                    favViewModel.toggleFavorite(filmId: film.id)
+                    toggleFavorite()
                 } label: {
                     let (imgName, lblText) =
-                        favViewModel.isFavorite(filmId: film.id)
+                        isFavorite
                         ? ("heart.fill", "Quita de favoritos")
                         : ("heart", "Añade a favoritos")
                     Label(lblText, systemImage: imgName)
