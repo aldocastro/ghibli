@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @Environment(FilmsViewModel.self) var viewModel
+    
     var body: some View {
         TabView {
             Tab("Películas", systemImage: "film.stack") {
@@ -23,9 +25,13 @@ struct MainTabView: View {
                 ProfileView()
             }
         }
+        .task {
+            await viewModel.loadFilms()
+        }
     }
 }
 
 #Preview {
     MainTabView()
+        .environment(FilmsViewModel())
 }

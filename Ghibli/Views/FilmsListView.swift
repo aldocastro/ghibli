@@ -34,9 +34,6 @@ struct FilmsListView: View {
                 ErrorView(error: error)
             }
         }
-        .task {
-            await viewModel.loadFilms()
-        }
     }
 }
 
