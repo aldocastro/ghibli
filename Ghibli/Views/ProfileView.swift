@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfileView: View {
+    private let viewTitle = "Perfil"
     @State private var profileViewModel = ProfileViewModel()
     @Environment(FavoritesViewModel.self) private var favoritesViewModel
     @Environment(FilmsViewModel.self) private var filmsViewModel
@@ -45,7 +46,7 @@ struct ProfileView: View {
                     profileViewModel.save()
                 }
             }
-            .navigationTitle("Perfil")
+            .navigationTitle(viewTitle)
         }
     }
 }

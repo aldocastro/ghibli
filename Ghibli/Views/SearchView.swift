@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
+    private let viewTitle = "Buscar"
     var body: some View {
         NavigationStack {
             ContentUnavailableView {
@@ -15,7 +16,7 @@ struct SearchView: View {
             } description: {
                 Text("Funcionalidad de búsqueda próximamente")
             }
-            .navigationTitle("Buscar")
+            .navigationTitle(viewTitle)
         }
     }
 }

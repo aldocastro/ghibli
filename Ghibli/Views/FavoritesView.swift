@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    private let viewTitle = "Favoritas"
     @Environment(FilmsViewModel.self) private var filmsVM
     @Environment(FavoritesViewModel.self) private var favoritesVM
 
@@ -15,11 +16,15 @@ struct FavoritesView: View {
         NavigationStack {
             if favoritesVM.hasNoFavorites {
                 EmptyView()
-                    .navigationTitle("Favoritas")
+                    .navigationTitle(viewTitle)
             } else {
                 let favorites: [Film] = filmsVM.films.filter { favoritesVM.isFavorite(filmId: $0.id) }
                 ContentList(favorites: favorites) { film in
                     favoritesVM.toggleFavorite(filmId: film.id)
+                }
+                .navigationTitle(viewTitle)
+                .navigationDestination(for: Film.self) { film in
+                    FilmDetailView(film: film)
                 }
             }
         }
@@ -43,10 +48,6 @@ fileprivate struct ContentList : View {
                     Label("Quitar de favoritas", systemImage: "heart.slash")
                 }
             }
-        }
-        .navigationTitle("Favoritas")
-        .navigationDestination(for: Film.self) { film in
-            FilmDetailView(film: film)
         }
     }
 }

@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct FilmsListView: View {
+    private let viewTitle = "Peliculas"
     @Environment(FilmsViewModel.self) private var viewModel
     @Environment(FavoritesViewModel.self) private var favViewModel
-    
-    private let viewTitle = "Peliculas"
     
     var body: some View {
         NavigationStack {
@@ -23,6 +22,7 @@ struct FilmsListView: View {
                 ProgressView {
                     Text("Cargando peliculas...")
                 }
+                .navigationTitle(viewTitle)
             case .loaded(let films):
                 List(films) { film in
                     let isFavorite = favViewModel.isFavorite(filmId: film.id)
