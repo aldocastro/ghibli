@@ -9,10 +9,14 @@ import Foundation
 
 @MainActor @Observable
 final class FavoritesViewModel {
-    private var favorites: Set<String> = []
+    var favoriteCount: Int = 0
+    var hasNoFavorites: Bool = true
     
-    var isFavoriteListEmpty: Bool {
-        favorites.isEmpty
+    private(set) var favorites: Set<String> = [] {
+        didSet {
+            favoriteCount = favorites.count
+            hasNoFavorites = favorites.isEmpty
+        }
     }
     
     func toggleFavorite(filmId: String) {

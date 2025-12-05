@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    @Environment(FilmsViewModel.self) var filmsVM
-    @Environment(FavoritesViewModel.self) var favoritesVM
+    @Environment(FilmsViewModel.self) private var filmsVM
+    @Environment(FavoritesViewModel.self) private var favoritesVM
 
     var body: some View {
         NavigationStack {
-            if favoritesVM.isFavoriteListEmpty {
+            if favoritesVM.hasNoFavorites {
                 EmptyView()
+                    .navigationTitle("Favoritas")
             } else {
                 let favorites: [Film] = filmsVM.films.filter { favoritesVM.isFavorite(filmId: $0.id) }
                 ContentList(favorites: favorites) { film in

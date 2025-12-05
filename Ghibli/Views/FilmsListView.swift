@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct FilmsListView: View {
-    @Environment(FilmsViewModel.self) var viewModel
+    @Environment(FilmsViewModel.self) private var viewModel
     @Environment(FavoritesViewModel.self) private var favViewModel
+    
+    private let viewTitle = "Peliculas"
     
     var body: some View {
         NavigationStack {
             switch viewModel.state {
             case .empty:
                 EmptyList()
+                    .navigationTitle(viewTitle)
             case .loading:
                 ProgressView {
                     Text("Cargando peliculas...")
@@ -39,12 +42,13 @@ struct FilmsListView: View {
                         }
                     }
                 }
-                .navigationTitle("Peliculas")
+                .navigationTitle(viewTitle)
                 .navigationDestination(for: Film.self) { film in
                     FilmDetailView(film: film)
                 }
             case .error(let error):
                 ErrorView(error: error)
+                    .navigationTitle(viewTitle)
             }
         }
     }

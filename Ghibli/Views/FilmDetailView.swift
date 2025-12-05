@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct FilmDetailView: View {
-    let film: Film
     @Environment(FavoritesViewModel.self) private var favoritesViewModel
+    let film: Film
     
     var body: some View {
         ScrollView {

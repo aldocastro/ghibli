@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @Environment(FilmsViewModel.self) var viewModel
+    @Environment(FilmsViewModel.self) private var filmsViewModel
     
     var body: some View {
         TabView {
@@ -26,7 +26,7 @@ struct MainTabView: View {
             }
         }
         .task {
-            await viewModel.loadFilms()
+            await filmsViewModel.loadFilms()
         }
     }
 }
@@ -34,4 +34,6 @@ struct MainTabView: View {
 #Preview {
     MainTabView()
         .environment(FilmsViewModel())
+        .environment(FavoritesViewModel())
+        .environment(ProfileViewModel())
 }
