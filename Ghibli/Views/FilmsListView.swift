@@ -24,28 +24,7 @@ struct FilmsListView: View {
                 }
                 .navigationTitle(viewTitle)
             case .loaded(let films):
-                List(films) { film in
-                    let isFavorite = favViewModel.isFavorite(filmId: film.id)
-                    NavigationLink(value: film) {
-                        FilmRow(film: film, isFavorite: isFavorite)
-                    }
-                    .buttonStyle(.plain)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button {
-                            favViewModel.toggleFavorite(filmId: film.id)
-                        } label: {
-                            Label(
-                                isFavorite ? "Quitar de favoritas" : "Añadir a favoritos",
-                                systemImage: isFavorite
-                                    ? "heart.slash.fill" : "heart.fill"
-                            )
-                        }
-                    }
-                }
-                .navigationTitle(viewTitle)
-                .navigationDestination(for: Film.self) { film in
-                    FilmDetailView(film: film)
-                }
+                FilmList(films: films, viewTitle: viewTitle)
             case .error(let error):
                 ErrorView(error: error)
                     .navigationTitle(viewTitle)

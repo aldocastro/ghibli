@@ -19,34 +19,7 @@ struct FavoritesView: View {
                     .navigationTitle(viewTitle)
             } else {
                 let favorites: [Film] = filmsVM.films.filter { favoritesVM.isFavorite(filmId: $0.id) }
-                ContentList(favorites: favorites) { film in
-                    favoritesVM.toggleFavorite(filmId: film.id)
-                }
-                .navigationTitle(viewTitle)
-                .navigationDestination(for: Film.self) { film in
-                    FilmDetailView(film: film)
-                }
-            }
-        }
-    }
-}
-
-fileprivate struct ContentList : View {
-    let favorites: [Film]
-    let removeFromFavorites: (Film) -> Void
-    
-    var body: some View {
-        List(favorites) { film in
-            NavigationLink(value: film) {
-                FilmRow(film: film, isFavorite: true)
-            }
-            .buttonStyle(.plain)
-            .swipeActions {
-                Button {
-                    removeFromFavorites(film)
-                } label: {
-                    Label("Quitar de favoritas", systemImage: "heart.slash")
-                }
+                FilmList(films: favorites, viewTitle: viewTitle)
             }
         }
     }
