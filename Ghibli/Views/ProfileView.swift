@@ -13,9 +13,9 @@ struct ProfileView: View {
     @Environment(FavoritesViewModel.self) private var favoritesViewModel
     @Environment(FilmsViewModel.self) private var filmsViewModel
 
-    @State var name: String = ""
-    @State var searchTerm: String = ""
-    
+    @State private var name: String = ""
+    @State private var foundFilm: Film?
+
     var body: some View {
         @Bindable var favoritesVM = favoritesViewModel
         @Bindable var filmsVM = filmsViewModel
@@ -24,7 +24,7 @@ struct ProfileView: View {
             Form {
                 Section(header: Text("Información Personal")) {
                     TextField("Tu nombre", text: $name)
-                    TextField("Busca película...", text: $searchTerm)
+                    FilmSearchRow(foundFilm: $foundFilm)
                 }
                 Section(header: Text("Estadísticas")) {
                     TitleValueRow(
@@ -38,9 +38,10 @@ struct ProfileView: View {
                         title: "Películas Disponibles",
                         titleColor: .blue,
                         image: "film.fill",
-                        value: $filmsVM.totalOfFilms)
+                        value: $filmsVM.totalOfFilms
+                    )
                 }
-                
+
                 Button("Guardar") {
                     print("Guardando cambios en perfil")
                     profileViewModel.save()
@@ -51,7 +52,7 @@ struct ProfileView: View {
     }
 }
 
-fileprivate struct EmptyView: View {
+private struct EmptyView: View {
     var body: some View {
         ContentUnavailableView {
             Label("Aquí va tu perfil", systemImage: "person.circle")

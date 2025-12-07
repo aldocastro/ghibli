@@ -18,12 +18,7 @@ final class FilmsViewModel {
     var searchTerm: String = ""
     
     var filteredFilms: [Film] {
-        films.filter {
-            $0.originalTitle.localizedCaseInsensitiveContains(searchTerm) ||
-            $0.title.localizedCaseInsensitiveContains(searchTerm) ||
-            $0.director.localizedCaseInsensitiveContains(searchTerm) ||
-            $0.producer.localizedCaseInsensitiveContains(searchTerm)
-        }
+        searchFilm(term: searchTerm)
     }
 
     private(set) var state: ViewState = .empty
@@ -41,6 +36,15 @@ final class FilmsViewModel {
             state = films.count > 0 ? .loaded(films) : .empty
         } catch {
             state = .error(error)
+        }
+    }
+    
+    func searchFilm(term: String) -> [Film] {
+        films.filter {
+            $0.originalTitle.localizedCaseInsensitiveContains(term) ||
+            $0.title.localizedCaseInsensitiveContains(term) ||
+            $0.director.localizedCaseInsensitiveContains(term) ||
+            $0.producer.localizedCaseInsensitiveContains(term)
         }
     }
 }
