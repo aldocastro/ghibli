@@ -15,6 +15,16 @@ enum ViewState {
 final class FilmsViewModel {
     let repository: NetworkRepository = Network()
     var totalOfFilms: Int = 0
+    var searchTerm: String = ""
+    
+    var filteredFilms: [Film] {
+        films.filter {
+            $0.originalTitle.localizedCaseInsensitiveContains(searchTerm) ||
+            $0.title.localizedCaseInsensitiveContains(searchTerm) ||
+            $0.director.localizedCaseInsensitiveContains(searchTerm) ||
+            $0.producer.localizedCaseInsensitiveContains(searchTerm)
+        }
+    }
 
     private(set) var state: ViewState = .empty
     private(set) var films: [Film] = [] {

@@ -9,14 +9,27 @@ import SwiftUI
 
 struct SearchView: View {
     private let viewTitle = "Buscar"
+    @Environment(FilmsViewModel.self) var filmsViewModel
+
     var body: some View {
+        @Bindable var vm = filmsViewModel
         NavigationStack {
-            ContentUnavailableView {
-                Label("Buscar Películas", systemImage: "magnifyingglass")
-            } description: {
-                Text("Funcionalidad de búsqueda próximamente")
+            if vm.filteredFilms.isEmpty {
+                ContentUnavailableView {
+                    Label("Búsqueda de películas", systemImage: "magnifyingglass")
+                } description: {
+                    Text("... por títulos, productores, directores, etc.")
+                }.navigationTitle(viewTitle)
+            } else {
+                FilmList(films: vm.filteredFilms, viewTitle: viewTitle)
             }
-            .navigationTitle(viewTitle)
         }
+        .searchable(text: $vm.searchTerm, prompt: "Buscar...")
     }
+}
+
+#Preview {
+    SearchView()
+        .environment(FavoritesViewModel())
+        .environment(FilmsViewModel())
 }
