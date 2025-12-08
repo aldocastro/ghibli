@@ -13,19 +13,21 @@ struct FavoritesView: View {
     @Environment(FavoritesViewModel.self) private var favoritesVM
 
     var body: some View {
+        @State var favorites = filmsVM.films.filter {
+            favoritesVM.isFavorite(filmId: $0.id)
+        }
+
         NavigationStack {
             if favoritesVM.hasNoFavorites {
-                EmptyView()
-                    .navigationTitle(viewTitle)
+                EmptyView().navigationTitle(viewTitle)
             } else {
-                let favorites: [Film] = filmsVM.films.filter { favoritesVM.isFavorite(filmId: $0.id) }
                 FilmList(films: favorites, viewTitle: viewTitle)
             }
         }
     }
 }
 
-fileprivate struct EmptyView: View {
+private struct EmptyView: View {
     var body: some View {
         ContentUnavailableView {
             Label("Sin Favoritas", systemImage: "heart.slash")

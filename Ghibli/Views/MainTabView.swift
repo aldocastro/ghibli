@@ -18,11 +18,11 @@ struct MainTabView: View {
             Tab("Favoritas", systemImage: "heart.fill") {
                 FavoritesView()
             }
-            Tab("Buscar", systemImage: "magnifyingglass") {
-                SearchView()
-            }
             Tab("Perfil", systemImage: "person.fill") {
                 ProfileView()
+            }
+            Tab("Buscar", systemImage: "magnifyingglass", role: .search) {
+                SearchView()
             }
         }
         .task {

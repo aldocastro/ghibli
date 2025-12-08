@@ -29,6 +29,7 @@ struct FilmList: View {
                         : ("Añadir a favoritos", "heart.fill")
                     Label(text, systemImage: image)
                 }
+                .tint(isFavorite ? .gray : .red)
             }
         }
         .navigationTitle(viewTitle)
@@ -36,4 +37,9 @@ struct FilmList: View {
             FilmDetailView(film: film)
         }
     }
+}
+
+#Preview {
+    FilmList(films: [.sample], viewTitle: "Films")
+        .environment(FavoritesViewModel())
 }

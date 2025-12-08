@@ -13,7 +13,6 @@ struct FilmSearchRow: View {
     @Binding var foundFilm: Film?
 
     var body: some View {
-        @Bindable var filmsVM = filmsVM
         @State var foundFilms = filmsVM.searchFilm(term: searchTerm)
         if let foundFilm {
             FilmRow(film: foundFilm, isFavorite: false)

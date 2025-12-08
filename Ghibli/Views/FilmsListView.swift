@@ -9,12 +9,11 @@ import SwiftUI
 
 struct FilmsListView: View {
     private let viewTitle = "Peliculas"
-    @Environment(FilmsViewModel.self) private var viewModel
-    @Environment(FavoritesViewModel.self) private var favViewModel
+    @Environment(FilmsViewModel.self) private var filmsViewModel
     
     var body: some View {
         NavigationStack {
-            switch viewModel.state {
+            switch filmsViewModel.state {
             case .empty:
                 EmptyList()
                     .navigationTitle(viewTitle)
