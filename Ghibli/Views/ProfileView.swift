@@ -6,15 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ProfileView: View {
     private let viewTitle = "Perfil"
+    @Query private var favorites: [FavoriteFilm]
+    
     @State private var profileViewModel = ProfileViewModel()
     @Environment(FavoritesViewModel.self) private var favoritesViewModel
     @Environment(FilmsViewModel.self) private var filmsViewModel
 
     @State private var name: String = ""
     @State private var foundFilm: Film?
+    
+    var favoriteCount: Int {
+        favorites.count
+    }
+    
+    var totalOfFilms: Int {
+        filmsViewModel.totalOfFilms
+    }
 
     var body: some View {
         @Bindable var favoritesVM = favoritesViewModel
@@ -31,14 +42,14 @@ struct ProfileView: View {
                         title: "Películas Favoritas",
                         titleColor: .red,
                         image: "heart.fill",
-                        value: $favoritesVM.favoriteCount
+                        value: favoriteCount
                     )
 
                     TitleValueRow(
                         title: "Películas Disponibles",
                         titleColor: .blue,
                         image: "film.fill",
-                        value: $filmsVM.totalOfFilms
+                        value: totalOfFilms
                     )
                 }
 

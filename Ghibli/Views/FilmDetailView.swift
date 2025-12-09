@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FilmDetailView: View {
     @Environment(FavoritesViewModel.self) private var favoritesViewModel
+    @Query(sort: \FavoriteFilm.title) private var favorites: [FavoriteFilm]
     let film: Film
+    
+    private var isFavorite: Bool {
+        favorites.first { $0.id == film.id } != nil
+    }
     
     var body: some View {
         ScrollView {
@@ -17,9 +23,9 @@ struct FilmDetailView: View {
                 BannerImageView(movieBanner: film.movieBanner)
                 Headline(
                     film: film,
-                    isFavorite: favoritesViewModel.isFavorite(filmId: film.id),
+                    isFavorite: isFavorite,
                     toggleFavorite: {
-                        favoritesViewModel.toggleFavorite(filmId: film.id)
+                        favoritesViewModel.toggleFavorite(film: film)
                     }
                 )
                 FilmMakers(director: film.director, producer: film.producer)

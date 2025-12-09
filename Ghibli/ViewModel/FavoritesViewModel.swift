@@ -6,28 +6,59 @@
 //
 
 import Foundation
+import SwiftData
+import SwiftUI
 
 @MainActor @Observable
 final class FavoritesViewModel {
-    var favoriteCount: Int = 0
-    var hasNoFavorites: Bool = true
-    
-    private(set) var favorites: Set<String> = [] {
-        didSet {
-            favoriteCount = favorites.count
-            hasNoFavorites = favorites.isEmpty
+    let modelContainer: ModelContainer
+
+    private var context: ModelContext {
+        modelContainer.mainContext
+    }
+
+    init() {
+        let schema = Schema([FavoriteFilm.self])
+        let modelCOnfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        do {
+            modelContainer = try ModelContainer(
+                for: schema,
+                configurations: [modelCOnfiguration]
+            )
+        } catch {
+            fatalError("Couldn't create ModelContainer: \(error)")
         }
     }
-    
-    func toggleFavorite(filmId: String) {
-        if isFavorite(filmId: filmId) {
-            favorites.remove(filmId)
+
+    func toggleFavorite(film: Film) {
+        let favoriteFilm = fetchFavorite(from: film)
+        if let favoriteFilm {
+            context.delete(favoriteFilm)
         } else {
-            favorites.insert(filmId)
+            context.insert(film.toFavoriteFilm())
         }
+        try? context.save()
+    }
+
+    func isFavorite(film: Film) -> Bool {
+        fetchFavorite(from: film) != nil
     }
     
-    func isFavorite(filmId: String) -> Bool {
-        favorites.contains(filmId)
+    private func fetchFavorite(from film: Film) -> FavoriteFilm? {
+        let predicate = #Predicate<FavoriteFilm> { $0.id == film.id }
+        let descriptor = FetchDescriptor<FavoriteFilm>(predicate: predicate)
+        return try? context.fetch(descriptor).first
+    }
+
+    private func fetchFavoriteCount() -> Int {
+        let descriptor = FetchDescriptor<FavoriteFilm>()
+        return (try? context.fetchCount(descriptor)) ?? 0
+    }
+
+    private func loadMockFavorites() {
+        for film in Film.samples {
+            context.insert(film.toFavoriteFilm())
+        }
     }
 }

@@ -6,22 +6,32 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FavoritesView: View {
     private let viewTitle = "Favoritas"
     @Environment(FilmsViewModel.self) private var filmsVM
     @Environment(FavoritesViewModel.self) private var favoritesVM
+    @Query private var favorites: [FavoriteFilm]
+    
+    var hasNoFavorites: Bool {
+        favorites.isEmpty
+    }
+    
+    var favoritesFilms: [Film] {
+        filmsVM.films.filter { film in
+            favorites.contains { favorite in
+                film.id == favorite.id
+            }
+        }
+    }
 
     var body: some View {
-        @State var favorites = filmsVM.films.filter {
-            favoritesVM.isFavorite(filmId: $0.id)
-        }
-
         NavigationStack {
-            if favoritesVM.hasNoFavorites {
+            if hasNoFavorites {
                 EmptyView().navigationTitle(viewTitle)
             } else {
-                FilmList(films: favorites, viewTitle: viewTitle)
+                FilmList(films: favoritesFilms, viewTitle: viewTitle)
             }
         }
     }

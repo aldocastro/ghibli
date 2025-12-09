@@ -11,7 +11,7 @@ struct TitleValueRow: View {
     let title: String
     let titleColor: Color
     let image: String
-    @Binding var value: Int
+    var value: Int
 
     var body: some View {
         HStack {
@@ -29,6 +29,6 @@ struct TitleValueRow: View {
         title: "Total of films",
         titleColor: .blue,
         image: "film.fill",
-        value: .constant(100)
+        value: 100
     )
 }

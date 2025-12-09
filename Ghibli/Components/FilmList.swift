@@ -6,22 +6,29 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FilmList: View {
     @Environment(FavoritesViewModel.self) private var favViewModel
+    @Query private var favoriteFilms: [FavoriteFilm]
+    private var favoriteIds: Set<String> {
+        Set(favoriteFilms.map { $0.id })
+    }
+
     let films: [Film]
     let viewTitle: String
+    
 
     var body: some View {
         List(films) { film in
-            let isFavorite = favViewModel.isFavorite(filmId: film.id)
+            let isFavorite = favoriteIds.contains(film.id)
             NavigationLink(value: film) {
                 FilmRow(film: film, isFavorite: isFavorite)
             }
             .buttonStyle(.plain)
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                 Button {
-                    favViewModel.toggleFavorite(filmId: film.id)
+                    favViewModel.toggleFavorite(film: film)
                 } label: {
                     let (text, image) =
                         isFavorite
