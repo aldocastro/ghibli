@@ -20,7 +20,15 @@ final class FilmsViewModel {
     var filteredFilms: [Film] {
         searchFilm(term: searchTerm)
     }
-
+    
+    var featuredFilms: [Film] {
+        Array(films
+            .filter { $0.rtScore > 9 }
+            .sorted { $0.rtScore > $1.rtScore }
+            .prefix(5)
+        )
+    }
+    
     private(set) var state: ViewState = .empty
     private(set) var films: [Film] = [] {
         didSet {

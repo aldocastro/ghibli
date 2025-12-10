@@ -23,6 +23,8 @@ struct FilmsListView: View {
                 }
                 .navigationTitle(viewTitle)
             case .loaded(let films):
+                CarouselScrollView(films: filmsViewModel.featuredFilms)
+                    .frame(height: FeaturedFilmCard.maxHeight)
                 FilmList(films: films, viewTitle: viewTitle)
             case .error(let error):
                 ErrorView(error: error)
